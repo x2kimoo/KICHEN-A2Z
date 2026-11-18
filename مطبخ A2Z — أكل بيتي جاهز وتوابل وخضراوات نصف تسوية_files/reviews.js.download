@@ -1,0 +1,114 @@
+// Explain: Handles interactive star rating and form submission for reviews.
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('reviewForm');
+    const starsWrap = document.getElementById('reviewStars');
+    const ratingText = document.getElementById('reviewRatingText');
+    const statusNode = document.getElementById('reviewStatus');
+    const grid = document.getElementById('reviewsGrid');
+    const nameEl = document.getElementById('reviewName');
+    const locationEl = document.getElementById('reviewLocation');
+    const textEl = document.getElementById('reviewText');
+
+    if (!form || !starsWrap) { return; }
+
+    const starButtons = Array.prototype.slice.call(starsWrap.querySelectorAll('[data-star]'));
+    const words = ['', 'نجمة واحدة', 'نجمتان', 'ثلاث نجوم', 'أربع نجوم', 'خمس نجوم'];
+    let rating = 0;
+
+    function paint(value) {
+        starButtons.forEach(function (btn) {
+            const num = Number(btn.getAttribute('data-star'));
+            const on = num <= value;
+            btn.classList.toggle('is-on', on);
+            btn.setAttribute('aria-checked', num === value ? 'true' : 'false');
+        });
+        if (ratingText) {
+            ratingText.textContent = value > 0 ? ('تقييمك: ' + words[value]) : 'اختر من ١ إلى ٥ نجوم';
+        }
+    }
+
+    starButtons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            rating = Number(btn.getAttribute('data-star')) || 0;
+            paint(rating);
+        });
+    });
+
+    function esc(value) {
+        if (typeof window.appEscapeHtml === 'function') { return window.appEscapeHtml(value); }
+        return String(value === null || value === undefined ? '' : value);
+    }
+
+    function cardHtml(rev) {
+        let stars = '';
+        for (let i = 1; i <= 5; i += 1) {
+            stars += i <= rev.rating
+                ? '<i class="fa-solid fa-star"></i>'
+                : '<i class="fa-regular fa-star text-[var(--muted-color)]"></i>';
+        }
+        let loc = '';
+        if (rev.location) {
+            loc = '<p class="mt-1 text-xs text-[var(--accent-color)]">' + esc(rev.location) + '</p>';
+        }
+        return '<figure class="soft-card flex h-full flex-col p-5 sm:p-7">' +
+            '<div class="flex items-center gap-1 text-[var(--accent-color)]" aria-label="تقييم ' + rev.rating + ' من ٥">' + stars + '</div>' +
+            '<blockquote class="mt-5 flex-1 text-sm leading-relaxed text-[var(--muted-color)]">' + esc(rev.text) + '</blockquote>' +
+            '<figcaption class="mt-6 border-t border-[var(--border-color)] pt-5">' +
+            '<p class="text-sm font-bold text-[var(--primary-color)]">' + esc(rev.name) + '</p>' + loc +
+            '</figcaption></figure>';
+    }
+
+    function showStatus(message, isError) {
+        if (!statusNode) { return; }
+        statusNode.textContent = message;
+        statusNode.style.color = isError ? 'var(--accent-color)' : 'var(--secondary-color)';
+        statusNode.classList.remove('hidden');
+    }
+
+    function makeKey() {
+        let hex = '';
+        while (hex.length < 12) { hex += Math.random().toString(16).slice(2); }
+        return 'review-' + hex.slice(0, 12);
+    }
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const name = (nameEl && nameEl.value ? nameEl.value : '').trim();
+        const location = (locationEl && locationEl.value ? locationEl.value : '').trim();
+        const text = (textEl && textEl.value ? textEl.value : '').trim();
+
+        if (!rating) { showStatus('يرجى اختيار تقييم من ١ إلى ٥ نجوم.', true); return; }
+        if (!name) { showStatus('يرجى كتابة اسمك.', true); return; }
+        if (!text) { showStatus('يرجى كتابة تعليقك.', true); return; }
+
+        const submitBtn = form.querySelector('button[type="submit"]');
+        if (submitBtn) { submitBtn.disabled = true; }
+
+        const review = { name: name, location: location, rating: rating, text: text };
+        const tasks = [];
+
+        if (window.DataSystem && typeof window.DataSystem.set === 'function') {
+            tasks.push(window.DataSystem.set('reviews', makeKey(), review));
+        }
+        if (window.MessagesSystem && typeof window.MessagesSystem.submit === 'function') {
+            tasks.push(window.MessagesSystem.submit([
+                { label: 'الاسم', value: name, type: 'text' },
+                { label: 'المنطقة', value: location, type: 'text' },
+                { label: 'التقييم', value: String(rating) + ' من ٥', type: 'number' },
+                { label: 'التعليق', value: text, type: 'textarea' }
+            ], form));
+        }
+
+        Promise.all(tasks).then(function () {
+            if (submitBtn) { submitBtn.disabled = false; }
+            if (grid) { grid.insertAdjacentHTML('afterbegin', cardHtml(review)); }
+            rating = 0;
+            paint(0);
+            form.reset();
+            showStatus('شكرًا لك! تم نشر تقييمك وظهر في أعلى القائمة.', false);
+        }).catch(function () {
+            if (submitBtn) { submitBtn.disabled = false; }
+            showStatus('تعذّر إرسال تقييمك، حاول مرة أخرى.', true);
+        });
+    });
+});

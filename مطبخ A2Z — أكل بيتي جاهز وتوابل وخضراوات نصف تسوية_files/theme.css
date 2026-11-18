@@ -1,0 +1,22 @@
+/* Explain: Design tokens for colors, typography, and spacing. */
+:root {
+    /* لوحة الألوان مستخرجة من شعار مطبخ A2Z */
+    --primary-color: #F2D6A2;        /* ذهبي دافئ — العناوين والأسعار */
+    --accent-color: #FF7A3D;         /* طُراكوتا / برتقالي التوابل — أزرار الطلب */
+    --secondary-color: #5AC488;      /* أخضر الأعشاب — شارات الطزاجة */
+    --background-color: #100D0A;     /* الفحمي الغامق من خلفية الشعار */
+    --surface-color: #1A1510;        /* سطح الكروت */
+    --surface-2-color: #221B14;      /* سطح ثانٍ */
+    --text-color: #F6EFE2;           /* الكريمي */
+    --muted-color: #B7AA95;          /* كريمي باهت */
+    --border-color: rgba(242, 214, 162, 0.16);
+
+    /* توهّج النيون */
+    --glow-gold: rgba(242, 214, 162, 0.45);
+    --glow-accent: rgba(255, 122, 61, 0.55);
+    --glow-green: rgba(90, 196, 136, 0.45);
+
+    /* الخطوط — عربية أولًا */
+    --font-heading: 'Amiri', 'Playfair Display', serif;
+    --font-body: 'Cairo', 'Tajawal', system-ui, sans-serif;
+}

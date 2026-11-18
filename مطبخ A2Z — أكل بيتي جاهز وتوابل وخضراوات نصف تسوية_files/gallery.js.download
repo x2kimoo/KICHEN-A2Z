@@ -1,0 +1,67 @@
+// Explain: JavaScript for the image lightbox gallery functionality.
+(function () {
+    function init() {
+        const modal = document.getElementById('menuLightbox');
+        const frame = document.getElementById('menuLightboxFrame');
+        const loading = document.getElementById('menuLightboxLoading');
+        const titleEl = document.getElementById('menuLightboxTitle');
+        const closeBtn = document.getElementById('menuLightboxClose');
+        const tiles = document.querySelectorAll('[data-menu-full]');
+        if (!modal || !frame || !tiles.length) { return; }
+
+        let lastFocus = null;
+
+        function close() {
+            modal.classList.add('is-hidden');
+            document.body.style.overflow = '';
+            frame.textContent = '';
+            if (lastFocus && typeof lastFocus.focus === 'function') { lastFocus.focus(); }
+        }
+
+        function open(url, title) {
+            lastFocus = document.activeElement;
+            frame.textContent = '';
+            if (loading) {
+                loading.textContent = 'جارٍ تحميل الصورة…';
+                loading.classList.remove('is-hidden');
+            }
+            if (titleEl) { titleEl.textContent = title || ''; }
+
+            const img = document.createElement('img');
+            img.alt = title || 'صورة القائمة';
+            img.sizes = '92vw';
+            img.className = 'is-hidden max-h-[72vh] w-auto max-w-full rounded-2xl object-contain';
+            img.addEventListener('load', function () {
+                if (loading) { loading.classList.add('is-hidden'); }
+                img.classList.remove('is-hidden');
+            });
+            img.addEventListener('error', function () {
+                if (loading) { loading.textContent = 'تعذّر تحميل الصورة، حاول مرة أخرى.'; }
+            });
+            img.src = url;
+
+            frame.appendChild(img);
+            modal.classList.remove('is-hidden');
+            document.body.style.overflow = 'hidden';
+            if (closeBtn) { closeBtn.focus(); }
+        }
+
+        tiles.forEach(function (tile) {
+            tile.addEventListener('click', function () {
+                open(tile.getAttribute('data-menu-full'), tile.getAttribute('data-menu-title'));
+            });
+        });
+
+        if (closeBtn) { closeBtn.addEventListener('click', close); }
+
+        modal.addEventListener('click', function (e) {
+            if (e.target === modal) { close(); }
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && !modal.classList.contains('is-hidden')) { close(); }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+})();

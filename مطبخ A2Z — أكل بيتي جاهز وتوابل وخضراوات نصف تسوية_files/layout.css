@@ -1,0 +1,35 @@
+/* Explain: Utility classes for page structure, layout management, and responsive adjustments. */
+.shell {
+    width: 100%;
+    max-width: 82rem;
+    margin-inline: auto;
+    padding-inline: 1rem;
+}
+
+@media (min-width: 640px) {
+    .shell {
+        padding-inline: 1.35rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .shell {
+        padding-inline: 1.75rem;
+    }
+}
+
+.hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+/* على الشاشات الصغيرة جدًا نقلّل الهوامش حتى لا يحدث تمرير أفقي */
+@media (max-width: 359px) {
+    .shell {
+        padding-inline: 0.75rem;
+    }
+}

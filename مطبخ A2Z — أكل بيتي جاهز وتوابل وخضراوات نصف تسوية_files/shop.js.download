@@ -1,0 +1,31 @@
+// Explain: Client-side logic for adding items to the cart.
+document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('click', function (e) {
+        const target = e.target;
+        if (!target || typeof target.closest !== 'function') { return; }
+
+        const btn = target.closest('[data-add-to-cart]');
+        if (!btn) { return; }
+        e.preventDefault();
+
+        const uid = btn.getAttribute('data-uid');
+        if (!uid || !window.OrderSystem) { return; }
+        if (btn.classList.contains('is-busy')) { return; }
+
+        btn.classList.add('is-busy');
+        window.OrderSystem.addToCart({ unique_id_txt: uid }, 1).then(function (res) {
+            btn.classList.remove('is-busy');
+            if (res && res.success) {
+                if (typeof window.appToast === 'function') { window.appToast('تمت الإضافة إلى السلة'); }
+                if (typeof window.appRefreshCartBadge === 'function') { window.appRefreshCartBadge(); }
+            } else {
+                if (typeof window.appToast === 'function') {
+                    window.appToast((res && res.error) || 'تعذّرت الإضافة، حاول مرة أخرى', 'error');
+                }
+            }
+        }).catch(function () {
+            btn.classList.remove('is-busy');
+            if (typeof window.appToast === 'function') { window.appToast('تعذّر الاتصال، حاول مرة أخرى', 'error'); }
+        });
+    });
+});

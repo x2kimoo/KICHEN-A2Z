@@ -1,0 +1,312 @@
+/* Explain: Styles for UI components like buttons, cards, chips, and form fields. */
+.eyebrow {
+    color: var(--accent-color);
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.02em;
+    text-shadow: 0 0 16px var(--glow-accent);
+}
+
+/* ---------- الأزرار ---------- */
+.btn-solid,
+.btn-dark,
+.btn-ghost,
+.btn-sage {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.9rem 1.9rem;
+    border-radius: 9999px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.2;
+    cursor: pointer;
+    border: 1px solid transparent;
+    text-align: center;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-sm {
+    padding: 0.55rem 1.25rem;
+    font-size: 0.85rem;
+}
+
+.btn-solid {
+    background: linear-gradient(135deg, #FF8A4C, #E2551F);
+    color: #1A0F06;
+    box-shadow: 0 0 0 1px rgba(255, 138, 76, 0.45), 0 0 22px -6px var(--glow-accent);
+}
+.btn-solid:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 0 1px rgba(255, 168, 116, 0.9), 0 0 32px 0 var(--glow-accent);
+}
+
+.btn-dark {
+    background-color: #241C14;
+    color: var(--primary-color);
+    border-color: rgba(242, 214, 162, 0.35);
+}
+.btn-dark:hover {
+    background-color: #2E2419;
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 0 26px -8px var(--glow-gold);
+}
+
+.btn-ghost {
+    background-color: transparent;
+    border-color: rgba(242, 214, 162, 0.35);
+    color: var(--primary-color);
+}
+.btn-ghost:hover {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+    box-shadow: 0 0 24px -8px var(--glow-accent);
+}
+
+.btn-sage {
+    background-color: #22382C;
+    color: #9BEFC0;
+    border-color: rgba(90, 196, 136, 0.45);
+}
+.btn-sage:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 26px -8px var(--glow-green);
+}
+
+/* ---------- أزرار الشعار في الأعلى ---------- */
+.icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 9999px;
+    color: var(--primary-color);
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+.icon-btn:hover {
+    background-color: rgba(255, 122, 61, 0.14);
+    color: var(--accent-color);
+    box-shadow: 0 0 20px -6px var(--glow-accent);
+}
+
+/* ---------- الكروت ---------- */
+.soft-card {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 1.25rem;
+    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+}
+.soft-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(255, 122, 61, 0.5);
+    box-shadow: 0 26px 50px -32px rgba(0, 0, 0, 0.95), 0 0 32px -12px var(--glow-accent);
+}
+
+/* ---------- تبويبات الأقسام ---------- */
+.cat-tab {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.55rem 1.35rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(242, 214, 162, 0.22);
+    background: transparent;
+    color: var(--primary-color);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.cat-tab:hover {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+}
+.cat-tab.is-active {
+    background: linear-gradient(135deg, #FF8A4C, #E2551F);
+    border-color: transparent;
+    color: #1A0F06;
+    box-shadow: 0 0 22px -6px var(--glow-accent);
+}
+
+/* ---------- شارة الطزاجة ---------- */
+.chip-fresh {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.28rem 0.7rem;
+    border-radius: 9999px;
+    background-color: rgba(90, 196, 136, 0.14);
+    border: 1px solid rgba(90, 196, 136, 0.45);
+    color: #8FE7B6;
+    font-size: 0.72rem;
+    font-weight: 700;
+    backdrop-filter: blur(4px);
+}
+
+/* ---------- حقول الإدخال ---------- */
+.field-luxe {
+    width: 100%;
+    border: 1px solid rgba(242, 214, 162, 0.2);
+    border-radius: 0.9rem;
+    background: #17120D;
+    padding: 0.85rem 1.1rem;
+    color: var(--text-color);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.field-luxe::placeholder {
+    color: rgba(246, 239, 226, 0.42);
+}
+.field-luxe:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 4px rgba(255, 122, 61, 0.16);
+}
+
+/* ---------- عارض صور القوائم ---------- */
+.menu-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 96;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: rgba(8, 6, 4, 0.92);
+    backdrop-filter: blur(6px);
+}
+.menu-lightbox.is-hidden {
+    display: none;
+}
+.menu-lightbox-card {
+    position: relative;
+    width: 100%;
+    max-width: 46rem;
+    max-height: 92vh;
+    overflow-y: auto;
+    border-radius: 1.5rem;
+    border: 1px solid var(--border-color);
+    background: var(--surface-color);
+    padding: 1.5rem;
+    box-shadow: 0 0 70px -16px var(--glow-accent);
+}
+.menu-lightbox-close {
+    position: absolute;
+    top: 0.85rem;
+    inset-inline-end: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 9999px;
+    border: 1px solid var(--border-color);
+    background: rgba(11, 9, 7, 0.75);
+    color: var(--primary-color);
+    cursor: pointer;
+    transition: color 0.3s ease, border-color 0.3s ease;
+}
+.menu-lightbox-close:hover {
+    color: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+/* ---------- محتوى الوصفات الغني ---------- */
+.recipe-body ul {
+    list-style: disc;
+    padding-inline-start: 1.5rem;
+}
+.recipe-body ol {
+    list-style: decimal;
+    padding-inline-start: 1.5rem;
+}
+.recipe-body li {
+    margin-block: 0.5rem;
+}
+.recipe-body p {
+    margin-block: 0.7rem;
+}
+
+/* ---------- ضبط المقاسات للهواتف والتابلت ---------- */
+@media (max-width: 639px) {
+    .icon-btn {
+        width: 2.35rem;
+        height: 2.35rem;
+    }
+
+    .btn-solid,
+    .btn-dark,
+    .btn-ghost,
+    .btn-sage {
+        padding: 0.72rem 1.35rem;
+        font-size: 0.88rem;
+    }
+
+    .btn-sm {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+
+    .cat-tab {
+        padding: 0.5rem 1rem;
+        font-size: 0.82rem;
+    }
+
+    .chip-fresh {
+        padding: 0.24rem 0.58rem;
+        font-size: 0.66rem;
+    }
+
+    .soft-card:hover {
+        transform: none;
+    }
+
+    .menu-lightbox {
+        padding: 0.65rem;
+    }
+
+    .menu-lightbox-card {
+        padding: 1.1rem;
+        max-height: 88vh;
+    }
+
+    .field-luxe {
+        padding: 0.75rem 0.95rem;
+        font-size: 0.95rem;
+    }
+}
+
+/* ---------- اختيار التقييم بالنجوم ---------- */
+.star-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.15rem;
+    background: transparent;
+    border: 0;
+    color: var(--muted-color);
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+.star-btn:hover {
+    transform: scale(1.12);
+}
+.star-btn:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 3px;
+    border-radius: 6px;
+}
+.star-btn.is-on {
+    color: var(--accent-color);
+    text-shadow: 0 0 14px var(--glow-accent);
+}
+
+@media (max-width: 639px) {
+    .star-btn {
+        font-size: 1.35rem;
+    }
+}

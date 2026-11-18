@@ -1,0 +1,35 @@
+// Explain: JavaScript for filtering and displaying product catalog items.
+(function () {
+    function activateCategory(cat) {
+        const tabs = document.querySelectorAll('#catalogTabs [data-cat]');
+        if (!tabs.length) { return; }
+
+        tabs.forEach(function (btn) {
+            const on = btn.getAttribute('data-cat') === cat;
+            btn.classList.toggle('is-active', on);
+            btn.setAttribute('aria-selected', on ? 'true' : 'false');
+        });
+
+        let visible = 0;
+        document.querySelectorAll('.catalog-item').forEach(function (item) {
+            const show = (cat === 'all') || (item.getAttribute('data-cat') === cat);
+            item.classList.toggle('is-hidden', !show);
+            if (show) { visible += 1; }
+        });
+
+        const empty = document.getElementById('catalogEmpty');
+        if (empty) { empty.classList.toggle('is-hidden', visible > 0); }
+    }
+
+    window.activateCatalogCategory = activateCategory;
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const tabs = document.querySelectorAll('#catalogTabs [data-cat]');
+        if (!tabs.length) { return; }
+        tabs.forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                activateCategory(btn.getAttribute('data-cat'));
+            });
+        });
+    });
+})();

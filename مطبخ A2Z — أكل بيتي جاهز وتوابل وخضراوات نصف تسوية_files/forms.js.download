@@ -1,0 +1,72 @@
+// Explain: Form submission handling for newsletter and contact.
+document.addEventListener('DOMContentLoaded', function () {
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    function status(node, message, isError) {
+        if (!node) { return; }
+        node.textContent = message;
+        node.style.color = isError ? 'var(--accent-color)' : 'var(--secondary-color)';
+        node.classList.remove('hidden');
+    }
+
+    const newsletter = document.getElementById('newsletterForm');
+    if (newsletter && window.MessagesSystem) {
+        newsletter.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const node = document.getElementById('newsletterStatus');
+            const email = (newsletter.email.value || '').trim();
+            if (!emailRe.test(email)) { status(node, 'يرجى إدخال بريد إلكتروني صحيح.', true); return; }
+            const btn = newsletter.querySelector('button[type="submit"]');
+            if (btn) { btn.disabled = true; }
+            window.MessagesSystem.submit([
+                { label: 'البريد الإلكتروني', value: email, type: 'email' },
+                { label: 'المصدر', value: 'النشرة البريدية', type: 'text' }
+            ], newsletter).then(function (r) {
+                if (btn) { btn.disabled = false; }
+                if (r && r.success) {
+                    newsletter.reset();
+                    status(node, 'تم اشتراكك بنجاح! تابع بريدك للحصول على أول نشرة.', false);
+                } else {
+                    status(node, (r && r.error) || 'تعذّر الاشتراك، حاول مرة أخرى.', true);
+                }
+            }).catch(function () {
+                if (btn) { btn.disabled = false; }
+                status(node, 'تعذّر الاتصال، حاول مرة أخرى.', true);
+            });
+        });
+    }
+
+    const contact = document.getElementById('contactForm');
+    if (contact && window.MessagesSystem) {
+        contact.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const node = document.getElementById('contactStatus');
+            const name = (contact.name.value || '').trim();
+            const phone = (contact.phone.value || '').trim();
+            const message = (contact.message.value || '').trim();
+            if (!name || !phone || !message) {
+                status(node, 'يرجى إكمال الاسم ورقم الهاتف والرسالة.', true);
+                return;
+            }
+            const btn = document.getElementById('contactSubmit');
+            if (btn) { btn.disabled = true; btn.textContent = 'جارٍ الإرسال…'; }
+            window.MessagesSystem.submit([
+                { label: 'الاسم', value: name, type: 'text' },
+                { label: 'رقم الهاتف', value: phone, type: 'tel' },
+                { label: 'الموضوع', value: contact.subject.value, type: 'select' },
+                { label: 'الرسالة', value: message, type: 'textarea' }
+            ], contact).then(function (r) {
+                if (btn) { btn.disabled = false; btn.textContent = 'إرسال الرسالة'; }
+                if (r && r.success) {
+                    contact.reset();
+                    status(node, 'وصلتنا رسالتك، وسنعاود التواصل معك قريبًا.', false);
+                } else {
+                    status(node, (r && r.error) || 'تعذّر الإرسال، حاول مرة أخرى.', true);
+                }
+            }).catch(function () {
+                if (btn) { btn.disabled = false; btn.textContent = 'إرسال الرسالة'; }
+                status(node, 'تعذّر الاتصال، حاول مرة أخرى.', true);
+            });
+        });
+    }
+});

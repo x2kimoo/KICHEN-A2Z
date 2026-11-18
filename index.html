@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مطبخ A2Z — أكل بيتي جاهز وتوابل وخضراوات نصف تسوية</title>
+    <meta name="description" content="توابل وصلصات جاهزة، خضراوات مغسولة ومقطّعة، أكل نصف تسوية، وحلويات بنكهة البيت — تحضير طازج يوميًا وتوصيل مبرّد سريع في الإسكندرية.">
+    <link rel="icon" href="https://files.cdn-files-a.com/uploads/12638316/100_6af6792dec8f8.jpg" type="image/jpeg">
+
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        :root {
+            --bg-color: #0b0907;
+            --surface-color: #16120e;
+            --surface-soft: #201a14;
+            --text-color: #f5f2ec;
+            --muted-color: #b3a89e;
+            --primary-color: #f2d6a2;
+            --accent-color: #ff7a3d;
+            --border-color: rgba(242, 214, 162, 0.15);
+            --font-heading: 'Cairo', sans-serif;
+            --font-body: 'Cairo', sans-serif;
+            --glow-accent: rgba(255, 122, 61, 0.25);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+        }
+
+        .shell {
+            max-width: 1200px;
+            margin-inline: auto;
+            padding-inline: 1rem;
+        }
+
+        .soft-card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 1.5rem;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .soft-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 122, 61, 0.4);
+        }
+
+        .btn-solid {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            background-color: var(--accent-color);
+            color: #1a0f06;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-solid:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+
+        .btn-ghost {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .btn-ghost:hover {
+            background-color: rgba(242, 214, 162, 0.1);
+        }
+
+        .cat-tab {
+            padding: 0.5rem 1.25rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 700;
+            cursor: pointer;
+            background-color: var(--surface-soft);
+            color: var(--muted-color);
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .cat-tab.is-active, .cat-tab:hover {
+            background-color: var(--accent-color);
+            color: #1a0f06;
+            border-color: var(--accent-color);
+        }
+
+        .field-luxe {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            background-color: var(--surface-soft);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            outline: none;
+        }
+
+        .field-luxe:focus {
+            border-color: var(--accent-color);
+        }
+
+        .eyebrow {
+            font-size: 0.85rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent-color);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 border-b border-[var(--border-color)] bg-[rgba(16,13,10,0.92)] backdrop-blur-md">
+        <div class="shell flex h-16 items-center justify-between gap-3 sm:h-[76px]">
+            <a href="#top" class="flex items-center gap-2.5">
+                <img alt="شعار مطبخ A2Z" class="h-10 w-10 rounded-xl object-contain" src="https://files.cdn-files-a.com/uploads/12638316/100_6af6792dec8f8.jpg">
+                <span class="text-xl font-bold text-[var(--primary-color)]">مطبخ <span class="text-[var(--accent-color)]">A2Z</span></span>
+            </a>
+
+            <nav class="hidden items-center gap-6 text-[0.95rem] font-semibold lg:flex">
+                <a href="#top" class="text-[var(--primary-color)] hover:text-[var(--accent-color)]">الرئيسية</a>
+                <a href="#products" class="text-[var(--primary-color)] hover:text-[var(--accent-color)]">منتجاتنا</a>
+                <a href="#about" class="text-[var(--primary-color)] hover:text-[var(--accent-color)]">من نحن</a>
+            </nav>
+
+            <div class="flex items-center gap-3">
+                <button type="button" onclick="toggleCartModal()" class="relative flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--border-color)] bg-[var(--surface-soft)] text-[var(--primary-color)] hover:text-[var(--accent-color)]">
+                    <i class="fa-solid fa-basket-shopping"></i>
+                    <span id="cartCount" class="absolute -end-1 -top-1 hidden h-5 min-w-5 items-center justify-center rounded-full bg-[var(--accent-color)] px-1 text-[10px] font-bold text-[#1A0F06]">0</span>
+                </button>
+                <a href="#products" class="btn-solid text-sm hidden sm:inline-flex">اطلب الآن</a>
+            </div>
+        </div>
+    </header>
+
+    <main id="top">
+        <!-- Hero Section -->
+        <section class="relative overflow-hidden pt-12 pb-16 md:py-24">
+            <div class="shell grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
+                <div class="text-center lg:text-start">
+                    <p class="eyebrow mb-4">من الألف إلى الياء… ومن غير عناء</p>
+                    <h1 class="text-4xl leading-tight sm:text-5xl lg:text-6xl font-extrabold">
+                        وفّر وقتك في المطبخ،
+                        <span class="block mt-2 text-[var(--accent-color)]">من غير ما تخسر الطعم</span>
+                    </h1>
+                    <p class="mx-auto mt-6 max-w-xl text-base text-[var(--muted-color)] lg:mx-0 sm:text-lg">
+                        توابل وصلصات جاهزة، خضراوات مغسولة ومقطّعة، أكل نصف تسوية، وحلويات بنكهة البيت — نجهّزها كل صباح ونوصّلها مبرّدة لبابك في الإسكندرية.
+                    </p>
+                    <div class="mt-8 flex flex-col justify-center gap-4 sm:flex-row lg:justify-start">
+                        <a href="#products" class="btn-solid">تسوّق كل الأقسام</a>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="overflow-hidden rounded-3xl border border-[var(--border-color)] shadow-2xl">
+                        <img alt="مكونات طازجة" class="aspect-[4/3] w-full object-cover" src="https://files.cdn-files-a.com/admin/system_photos_stock/1200_6961b81184bc9.jpg">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Products Catalog Section -->
+        <section id="products" class="py-16 bg-[var(--surface-color)]/40 border-y border-[var(--border-color)]">
+            <div class="shell">
+                <div class="mx-auto mb-10 max-w-2xl text-center">
+                    <p class="eyebrow">منتجاتنا</p>
+                    <h2 class="mt-3 text-3xl md:text-4xl font-bold text-[var(--primary-color)]">تسوّق جاهز من الألف إلى الياء</h2>
+                    <p class="mt-3 text-sm sm:text-base text-[var(--muted-color)]">اختر القسم وأضف ما يناسبك إلى السلة لإرسال الطلب مباشرة عبر واتساب.</p>
+                </div>
+
+                <!-- Categories Tabs -->
+                <div class="mb-10 flex flex-wrap items-center justify-center gap-2" id="catalogTabs">
+                    <button type="button" class="cat-tab is-active" onclick="filterCatalog('all')">كل المنتجات</button>
+                    <button type="button" class="cat-tab" onclick="filterCatalog('توابل وصلصات')">توابل وصلصات</button>
+                    <button type="button" class="cat-tab" onclick="filterCatalog('خضراوات جاهزة')">خضراوات جاهزة</button>
+                    <button type="button" class="cat-tab" onclick="filterCatalog('أكل نصف تسوية')">أكل نصف تسوية</button>
+                    <button type="button" class="cat-tab" onclick="filterCatalog('حلويات')">حلويات</button>
+                </div>
+
+                <!-- Products Grid -->
+                <div id="productsGrid" class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                    <!-- Dynamic Products Generated by JS -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-[var(--border-color)] bg-[#0B0907] py-12">
+        <div class="shell text-center text-sm text-[var(--muted-color)]">
+            <p>© 2026 مطبخ A2Z. جميع الحقوق محفوظة — الإسكندرية.</p>
+            <p class="mt-2">للتواصل السريع: <a href="tel:01210040683" class="text-[var(--accent-color)] font-bold" dir="ltr">01210040683</a></p>
+        </div>
+    </footer>
+
+    <!-- Cart Modal -->
+    <div id="cartModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
+        <div class="relative w-full max-w-lg rounded-3xl border border-[var(--border-color)] bg-[var(--surface-color)] p-6 shadow-2xl">
+            <div class="flex items-center justify-between border-b border-[var(--border-color)] pb-4">
+                <h3 class="text-xl font-bold text-[var(--primary-color)]"><i class="fa-solid fa-basket-shopping me-2"></i> سلة المشتريات</h3>
+                <button type="button" onclick="toggleCartModal()" class="text-2xl text-[var(--muted-color)] hover:text-white">&times;</button>
+            </div>
+            <div id="cartItemsContainer" class="my-4 max-h-60 space-y-3 overflow-y-auto pr-1">
+                <!-- Cart items -->
+            </div>
+            <div class="border-t border-[var(--border-color)] pt-4">
+                <div class="mb-4 flex items-center justify-between text-lg font-bold">
+                    <span>الإجمالي:</span>
+                    <span id="cartTotalPrice" class="text-[var(--accent-color)]">0 ج.م</span>
+                </div>
+                <div class="space-y-3">
+                    <input type="text" id="customerName" class="field-luxe" placeholder="اسمك بالكامل">
+                    <input type="text" id="customerAddress" class="field-luxe" placeholder="عنوانك في الإسكندرية (المنطقة والشارع)">
+                    <button type="button" onclick="sendWhatsAppOrder()" class="btn-solid w-full !bg-[#25D366] !text-white">
+                        <i class="fa-brands fa-whatsapp text-lg"></i> إرسال الطلب عبر واتساب
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        const products = [
+            { id: 1, name: "فراخ بانيه متبّلة جاهزة على القلي", category: "أكل نصف تسوية", price: 190, unit: "1 كجم", img: "https://files.cdn-files-a.com/admin/system_photos_stock/800_697a31375d2ae.jpg" },
+            { id: 2, name: "صينية مكرونة بشاميل ولازانيا", category: "أكل نصف تسوية", price: 240, unit: "1.5 كجم", img: "https://cdn-cms.f-static.net/ready_uploads/media/4633096/800_5e90f3a5adddb.jpg" },
+            { id: 3, name: "ورق عنب ملفوف جاهز للتسوية", category: "أكل نصف تسوية", price: 180, unit: "1 كجم", img: "https://files.cdn-files-a.com/admin/system_photos_stock/800_697a16e797ba5.jpg" },
+            { id: 4, name: "شيش طاووق متبّل", category: "أكل نصف تسوية", price: 210, unit: "900 جم", img: "https://files.cdn-files-a.com/admin/system_photos_stock/800_6af273a3c2d26.jpg" },
+            { id: 5, name: "ثوم مفروم جاهز", category: "توابل وصلصات", price: 45, unit: "250 جم", img: "https://files.cdn-files-a.com/uploads/12638316/400_gi-6af67a35e4f6b.jpg" },
+            { id: 6, name: "صلصة طماطم مسبّكة جاهزة", category: "توابل وصلصات", price: 85, unit: "700 جم", img: "https://files.cdn-files-a.com/admin/system_photos_stock/400_696f28aaf23f0.jpg" },
+            { id: 7, name: "ملوخية مخرّطة جاهزة", category: "خضراوات جاهزة", price: 90, unit: "800 جم", img: "https://cdn-cms.f-static.net/ready_uploads/media/4296754/400_5e80a8079a420.jpg" },
+            { id: 8, name: "بامية مقمّعة وجاهزة", category: "خضراوات جاهزة", price: 95, unit: "750 جم", img: "https://cdn-cms.f-static.net/ready_uploads/media/2678587/400_5e2b1cd640ad0.jpg" },
+            { id: 9, name: "كوسة وباذنجان مقوّر جاهز للمحشي", category: "خضراوات جاهزة", price: 120, unit: "1 كجم", img: "https://cdn-cms.f-static.net/ready_uploads/media/6846008/400_5f84798ab45b0.jpg" },
+            { id: 10, name: "كنافة بالكريمة والمكسرات", category: "حلويات", price: 180, unit: "1 كجم", img: "https://files.cdn-files-a.com/admin/system_photos_stock/400_6979c2d28608b.jpg" },
+            { id: 11, name: "بقلاوة مشكّلة بالمكسرات", category: "حلويات", price: 160, unit: "500 جم", img: "https://files.cdn-files-a.com/admin/system_photos_stock/400_69669156e4295.jpg" },
+            { id: 12, name: "مولتن كيك شوكولاتة جاهز للخبز", category: "حلويات", price: 140, unit: "6 قطع", img: "https://files.cdn-files-a.com/admin/system_photos_stock/400_695dcad74c4ec.jpg" }
+        ];
+
+        let cart = JSON.parse(localStorage.getItem('a2z_cart')) || [];
+
+        function renderProducts(cat = 'all') {
+            const grid = document.getElementById('productsGrid');
+            const filtered = cat === 'all' ? products : products.filter(p => p.category === cat);
+
+            grid.innerHTML = filtered.map(p => `
+                <div class="soft-card flex flex-col overflow-hidden">
+                    <div class="aspect-square overflow-hidden bg-black/20">
+                        <img src="${p.img}" alt="${p.name}" class="h-full w-full object-cover transition-transform duration-500 hover:scale-105" loading="lazy">
+                    </div>
+                    <div class="flex flex-1 flex-col p-4">
+                        <span class="text-xs font-bold text-[var(--accent-color)]">${p.category}</span>
+                        <h3 class="mt-1 text-base font-bold text-[var(--text-color)]">${p.name}</h3>
+                        <p class="mt-2 text-xs text-[var(--muted-color)]"><i class="fa-solid fa-weight-hanging text-[var(--accent-color)]"></i> ${p.unit}</p>
+                        <div class="mt-auto flex items-center justify-between border-t border-[var(--border-color)] pt-3 mt-3">
+                            <span class="text-lg font-bold text-[var(--primary-color)]">ج.م ${p.price}.00</span>
+                            <button type="button" onclick="addToCart(${p.id})" class="btn-solid !py-2 !px-3 text-xs">
+                                <i class="fa-solid fa-cart-plus"></i> أضف
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterCatalog(cat) {
+            document.querySelectorAll('.cat-tab').forEach(tab => {
+                tab.classList.toggle('is-active', tab.textContent.includes(cat) || (cat === 'all' && tab.textContent.includes('كل')));
+            });
+            renderProducts(cat);
+        }
+
+        function addToCart(id) {
+            const item = products.find(p => p.id === id);
+            const found = cart.find(i => i.id === id);
+            if (found) {
+                found.qty += 1;
+            } else {
+                cart.push({ ...item, qty: 1 });
+            }
+            saveCart();
+            alert(`تم إضافة "${item.name}" إلى السلة بنجاح!`);
+        }
+
+        function updateQty(id, delta) {
+            const item = cart.find(i => i.id === id);
+            if (!item) return;
+            item.qty += delta;
+            if (item.qty <= 0) {
+                cart = cart.filter(i => i.id !== id);
+            }
+            saveCart();
+            renderCartModal();
+        }
+
+        function saveCart() {
+            localStorage.setItem('a2z_cart', JSON.stringify(cart));
+            const totalQty = cart.reduce((sum, i) => sum + i.qty, 0);
+            const badge = document.getElementById('cartCount');
+            if (totalQty > 0) {
+                badge.textContent = totalQty;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+
+        function toggleCartModal() {
+            const modal = document.getElementById('cartModal');
+            modal.classList.toggle('hidden');
+            modal.classList.toggle('flex');
+            if (!modal.classList.contains('hidden')) {
+                renderCartModal();
+            }
+        }
+
+        function renderCartModal() {
+            const container = document.getElementById('cartItemsContainer');
+            const totalEl = document.getElementById('cartTotalPrice');
+
+            if (cart.length === 0) {
+                container.innerHTML = `<p class="text-center text-sm text-[var(--muted-color)] py-6">سلة المشتريات فارغة حالياً.</p>`;
+                totalEl.textContent = '0 ج.م';
+                return;
+            }
+
+            let total = 0;
+            container.innerHTML = cart.map(i => {
+                const sub = i.price * i.qty;
+                total += sub;
+                return `
+                    <div class="flex items-center justify-between rounded-xl bg-[var(--surface-soft)] p-3 border border-[var(--border-color)]">
+                        <div>
+                            <p class="font-bold text-sm text-[var(--primary-color)]">${i.name}</p>
+                            <p class="text-xs text-[var(--muted-color)]">${i.price} ج.م × ${i.qty} = <span class="text-[var(--accent-color)] font-bold">${sub} ج.م</span></p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button type="button" onclick="updateQty(${i.id}, -1)" class="h-7 w-7 rounded-lg bg-black/40 text-white font-bold">-</button>
+                            <span class="text-sm font-bold w-5 text-center">${i.qty}</span>
+                            <button type="button" onclick="updateQty(${i.id}, 1)" class="h-7 w-7 rounded-lg bg-black/40 text-white font-bold">+</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            totalEl.textContent = `${total} ج.م`;
+        }
+
+        function sendWhatsAppOrder() {
+            if (cart.length === 0) {
+                alert('السلة فارغة، اختر بعض المنتجات أولاً.');
+                return;
+            }
+            const name = document.getElementById('customerName').value.trim();
+            const address = document.getElementById('customerAddress').value.trim();
+
+            if (!name || !address) {
+                alert('من فضلك أدخل الاسم والعنوان بالتفصيل.');
+                return;
+            }
+
+            let text = `*طلب جديد من موقع مطبخ A2Z 🛒*\n`;
+            text += `👤 *الاسم:* ${name}\n`;
+            text += `📍 *العنوان:* ${address}\n\n`;
+            text += `📋 *المنتجات المطلوبة:*\n`;
+
+            let total = 0;
+            cart.forEach(i => {
+                const sub = i.price * i.qty;
+                total += sub;
+                text += `- ${i.name} (${i.qty} ${i.unit}) = ${sub} ج.م\n`;
+            });
+
+            text += `\n💰 *الإجمالي الكلي:* ${total} ج.م`;
+
+            const phone = '201210040683';
+            const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+            window.open(url, '_blank');
+        }
+
+        // Initialize
+        renderProducts();
+        saveCart();
+    </script>
+</body>
+</html>

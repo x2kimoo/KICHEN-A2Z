@@ -1,0 +1,183 @@
+// Explain: App entry point and shared utility functions.
+window.appEscapeHtml = function (value) {
+    const str = (value === null || value === undefined) ? '' : String(value);
+    return str.replace(/[&<>"']/g, function (ch) {
+        const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+        return map[ch];
+    });
+};
+
+window.appToast = function (message, tone) {
+    let host = document.getElementById('appToastHost');
+    if (!host) {
+        host = document.createElement('div');
+        host.id = 'appToastHost';
+        host.className = 'fixed bottom-6 start-1/2 -translate-x-1/2 z-[98] flex flex-col gap-3 w-[calc(100%-2rem)] max-w-sm pointer-events-none';
+        document.body.appendChild(host);
+    }
+    const el = document.createElement('div');
+    el.className = 'rounded-2xl border px-6 py-4 text-sm text-center shadow-2xl transition-all duration-300 ' +
+        (tone === 'error'
+            ? 'bg-[var(--surface-color)] text-[var(--accent-color)] border-[var(--accent-color)]'
+            : 'bg-[var(--surface-color)] text-[var(--primary-color)] border-[var(--primary-color)]');
+    el.textContent = message;
+    host.appendChild(el);
+    window.setTimeout(function () {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(12px)';
+        window.setTimeout(function () { el.remove(); }, 350);
+    }, 3200);
+};
+
+window.appRefreshCartBadge = function () {
+    const badge = document.getElementById('cartCount');
+    if (!badge || !window.OrderSystem) { return; }
+    window.OrderSystem.getCart().then(function (res) {
+        if (!res || !res.success || !Array.isArray(res.cart)) { return; }
+        const count = res.cart.reduce(function (sum, item) { return sum + (Number(item.count) || 0); }, 0);
+        badge.textContent = String(count);
+        badge.classList.toggle('is-hidden', count === 0);
+    }).catch(function () {});
+};
+
+function appFormatPrice(value) {
+    if (window.CurrencySystem && typeof window.CurrencySystem.format === 'function') {
+        try { return window.CurrencySystem.format(Number(value) || 0); } catch (e) { /* fall through */ }
+    }
+    return String(Number(value) || 0);
+}
+
+function appRenderSearchResults(items, query) {
+    const host = document.getElementById('headerSearchResults');
+    if (!host) { return; }
+    host.textContent = '';
+
+    if (!query || query.length < 2) { return; }
+
+    if (!items || !items.length) {
+        const none = document.createElement('p');
+        none.className = 'px-1 py-2 text-sm text-[var(--muted-color)]';
+        none.textContent = 'لا توجد نتائج مطابقة. جرّب كلمة أخرى مثل «ثوم» أو «كنافة».';
+        host.appendChild(none);
+        return;
+    }
+
+    items.forEach(function (item) {
+        const row = document.createElement('div');
+        row.className = 'flex items-center gap-3 rounded-xl border border-[var(--border-color)] bg-[var(--surface-color)] p-2';
+
+        const link = document.createElement('a');
+        link.href = '#products';
+        link.className = 'flex min-w-0 flex-1 items-center gap-3';
+        if (item.category) { link.setAttribute('data-jump-cat', item.category); }
+
+        const img = document.createElement('img');
+        img.src = item.image || '';
+        img.alt = item.name || '';
+        img.sizes = '48px';
+        img.className = 'h-12 w-12 shrink-0 rounded-lg object-cover';
+        link.appendChild(img);
+
+        const info = document.createElement('span');
+        info.className = 'min-w-0 flex-1';
+        const name = document.createElement('span');
+        name.className = 'block truncate text-sm font-bold text-[var(--text-color)]';
+        name.textContent = item.name || '';
+        const price = document.createElement('span');
+        price.className = 'block text-xs text-[var(--accent-color)]';
+        price.textContent = appFormatPrice(item.price);
+        info.appendChild(name);
+        info.appendChild(price);
+        link.appendChild(info);
+        row.appendChild(link);
+
+        if (item.unique_id_txt) {
+            const add = document.createElement('button');
+            add.type = 'button';
+            add.className = 'btn-solid btn-sm shrink-0';
+            add.setAttribute('data-add-to-cart', '');
+            add.setAttribute('data-uid', item.unique_id_txt);
+            add.textContent = 'أضف';
+            row.appendChild(add);
+        }
+
+        host.appendChild(row);
+    });
+}
+
+function appInitHeaderSearch() {
+    const toggle = document.getElementById('headerSearchToggle');
+    const panel = document.getElementById('headerSearchPanel');
+    const input = document.getElementById('headerSearchInput');
+    if (!toggle || !panel || !input) { return; }
+
+    let timer = null;
+
+    function closePanel() {
+        panel.classList.add('is-hidden');
+        toggle.setAttribute('aria-expanded', 'false');
+    }
+
+    toggle.addEventListener('click', function (e) {
+        e.preventDefault();
+        const willOpen = panel.classList.contains('is-hidden');
+        panel.classList.toggle('is-hidden', !willOpen);
+        toggle.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+        if (willOpen) {
+            input.focus();
+        } else {
+            input.blur();
+        }
+    });
+
+    input.addEventListener('input', function () {
+        const q = input.value.trim();
+        if (timer) { window.clearTimeout(timer); }
+        if (q.length < 2) {
+            appRenderSearchResults([], '');
+            return;
+        }
+        timer = window.setTimeout(function () {
+            if (!window.DataSystem || typeof window.DataSystem.dataSearch !== 'function') { return; }
+            window.DataSystem.dataSearch(['prepared_foods'], q, 6).then(function (res) {
+                if (!res || !res.success) {
+                    appRenderSearchResults([], q);
+                    return;
+                }
+                appRenderSearchResults(res.results || [], q);
+            }).catch(function () {
+                appRenderSearchResults([], q);
+            });
+        }, 260);
+    });
+
+    input.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') { closePanel(); }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    window.appRefreshCartBadge();
+
+    document.querySelectorAll('.app-nav-link').forEach(function (link) {
+        link.addEventListener('click', function () {
+            if (document.activeElement && typeof document.activeElement.blur === 'function') {
+                document.activeElement.blur();
+            }
+        });
+    });
+
+    appInitHeaderSearch();
+
+    document.addEventListener('click', function (e) {
+        const target = e.target;
+        if (!target || typeof target.closest !== 'function') { return; }
+        const jump = target.closest('[data-jump-cat]');
+        if (jump && typeof window.activateCatalogCategory === 'function') {
+            window.activateCatalogCategory(jump.getAttribute('data-jump-cat'));
+        }
+    });
+
+    const yearEl = document.getElementById('footerYear');
+    if (yearEl) { yearEl.textContent = String(new Date().getFullYear()); }
+});
